@@ -35,12 +35,17 @@ def login():
 
         if db.login(email, password):
             print('Logged In')
+            return redirect(url_for('home'))
         else:
             print ('wrong email or password')
 
     
     return render_template('login.html')
 
+@app.route('/home', methods=['POST', 'GET'])
+def home():
+
+    return render_template('home.html')
 
 
 if __name__ == '__main__':
