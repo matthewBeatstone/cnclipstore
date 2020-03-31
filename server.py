@@ -1,16 +1,18 @@
 from flask import *
 from db import Db
+from flask_cors import CORS
 
 db = Db()
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
-    if request.form:
-        email = request.form['email']
-        password = request.form['password']
-        first_name = request.form['first_name']
-        last_name = request.form['last_name']
+    if request.json:
+        email = request.json['email']
+        password = request.json['password']
+        first_name = request.json['first_name']
+        last_name = request.json['last_name']
 
         if db.exist_user(email):
             print('user already exist')
@@ -29,23 +31,21 @@ def signup():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
    
-    if request.form:
-        email = request.form['email']
-        password = request.form['password']
+    if request.json:
+        email = request.json['email']
+        password = request.json['password']
+        print(email, password)
 
         if db.login(email, password):
             print('Logged In')
-            return redirect(url_for('home'))
+            user = db.get_user(email)
+            return jsonify(status=201, user=user)
+
         else:
             print ('wrong email or password')
+            return jsonify(status=401)   
 
-    
-    return render_template('login.html')
-
-@app.route('/home', methods=['POST', 'GET'])
-def home():
-
-    return render_template('home.html')
+    return jsonify(status=200)
 
 
 if __name__ == '__main__':

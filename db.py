@@ -1,14 +1,16 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
-"""
-Created on Fri May 10 01:30:09 2019
-
-@author: matteo
-"""
-
 import pymongo
 from werkzeug.security import generate_password_hash, \
     check_password_hash
+
+import json
+from bson import ObjectId
+
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
+
 
 
 client = pymongo.MongoClient("mongodb://localhost:27017")
@@ -40,6 +42,11 @@ class Db():
 
         except:
             return False
+
+    def get_user(self, email):
+        query = {'email': email}
+        user = users_collection.find_one(query)
+        return JSONEncoder().encode(user)
 
 
 

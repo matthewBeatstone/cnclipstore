@@ -1,0 +1,22 @@
+
+# dependencies
+/crystal/node_modules
+/crystal/.pnp
+/crystal/.pnp.js
+
+# testing
+/crystal/coverage
+
+# production
+/crystal/build
+
+# misc
+/crystal/.DS_Store
+/crystal/.env.local
+/crystal/.env.development.local
+/crystal/.env.test.local
+/crystal/.env.production.local
+
+/crystal/pm-debug.log*
+/crystal/narn-debug.log*
+/crystal/arn-error.log*
